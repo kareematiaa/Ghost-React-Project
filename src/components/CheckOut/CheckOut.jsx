@@ -92,7 +92,7 @@ export default function CheckOut() {
 
         {/* Shipping Button */}
         <button className="w-full bg-gray-1000 text-white py-3 mt-6 flex items-center justify-center gap-2 ">
-          Shipping →
+          Order →
         </button>
       </div>
 
@@ -128,9 +128,7 @@ export default function CheckOut() {
           </div>
           <div className="flex justify-between">
             <span>Shipping</span>
-            <span className="text-gray-500 text-sm">
-              Calculated at next step
-            </span>
+            <span className="text-gray-500 text-sm">$100 </span>
           </div>
           <div className="border-t pt-2 flex justify-between font-semibold text-lg">
             <span>Total</span>

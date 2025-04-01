@@ -6,18 +6,18 @@ import model2 from "../../assets/model2.png";
 export default function Home() {
   return (
     <>
-      <div className="w-full  text-black px-6 md:px-12">
+      <div className="w-full text-black px-6 md:px-12">
         {/* New Collection Section */}
-        <section className="mt-40 ">
+        <section className="my-20 lg:mt-40 lg:mb-10 ">
           <div className="grid grid-cols-3 gap-x-10">
             <div className="relative">
-              <h2 className="text-lg lg:text-4xl md:text-5xl font-bold uppercase">
+              <h2 className="text-lg lg:text-4xl md:text-3xl font-bold uppercase">
                 New Collection
               </h2>
               <p className="text-base lg:text-lg text-gray-500">Summer</p>
-              <p className="text-gray-500">2025</p>
+              <p className="text-gray-500 pb-8">2025</p>
               <div className=" flex items-end">
-                <button className="absolute  lg:bottom-64 flex items-center font-semibold gap-2 bg-gray-20 text-gray-1000 py-1 px-4 lg:px-8">
+                <button className="absolute lg:bottom-64 flex items-center w-28 h-7 lg:w-1/2 lg:h-10 text-xs lg:text-base font-semibold gap-2 bg-gray-20 text-gray-1000 py-1 px-2 lg:px-8">
                   Go To Shop
                   <span className="ml-2">→</span>
                 </button>
@@ -45,17 +45,17 @@ export default function Home() {
         {/* New This Week Section */}
         <section className="mb-48">
           <div className="flex justify-between items-center">
-            <h2 className="text-4xl md:text-5xl font-bold uppercase">
+            <h2 className="text-lg lg:text-4xl md:text-3xl  font-bold uppercase">
               New This Week
             </h2>
-            <a href="#" className="text-gray-500 text-lg">
+            <a href="#" className="text-gray-500 text-base lg:text-lg">
               See All
             </a>
           </div>
           <p className="text-lg text-gray-500">(50)</p>
 
           {/* Products Grid */}
-          <div className="grid grid-cols-4 mt-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-6 gap-6">
             {/* Product Card */}
             {[
               {
@@ -95,10 +95,10 @@ export default function Home() {
         </section>
 
         <section className="mt-20 mb-10">
-          <h2 className="text-4xl md:text-5xl font-medium uppercase text-center">
+          <h2 className="text-lg lg:text-4xl md:text-3xl  font-medium uppercase text-center">
             Our Approach to fashion design
           </h2>
-          <p className="text-lg text-gray-800 text-center mt-4 px-64">
+          <p className="text-lg text-gray-800 text-center mt-4 px-10 md:px-32 lg:px-64">
             at elegant vogue , we blend creativity with craftsmanship to create
             fashion that transcends trends and stands the test of time each
             design is meticulously crafted, ensuring the highest quelity
@@ -106,8 +106,8 @@ export default function Home() {
           </p>
         </section>
 
-        <section className="my-36">
-          <div className="grid grid-cols-3 gap-6">
+        <section className="my-16 lg:my-36">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
             <div>
               <img src={model1} className="w-full h-96 object-cover" />
             </div>
