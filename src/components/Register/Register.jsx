@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./Register.module.css";
 import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
+import AuthService from "../../Services/AuthService";
 import * as Yup from "yup";
 
 export default function Register() {
@@ -10,7 +11,7 @@ export default function Register() {
   const navigate = useNavigate(); // Hook to navigate programmatically
 
   let mySchema = Yup.object({
-    name: Yup.string()
+    fullName: Yup.string()
       .required("name is required")
       .min(3, "at least 3 char")
       .max(15, "max is 15"),
@@ -33,7 +34,7 @@ export default function Register() {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      fullName: "",
       email: "",
       phoneNumber: "",
       password: "",
@@ -43,10 +44,22 @@ export default function Register() {
     onSubmit: async (values) => {
       setError(null);
       setLoading(true); // Set loading to true
-      // const { confirmPassword, ...requestData } = values;
 
       try {
-        console.log(values);
+        // Only generate OTP, don't register yet
+        const otpResponse = await AuthService.generateOtp(
+          values.email,
+          "confirmation"
+        );
+        console.log("OTP generated successfully:", otpResponse);
+        // Navigate to OTP page with all form values
+        navigate("/Otp", {
+          state: {
+            userData: values,
+            email: values.email,
+            otp: otpResponse,
+          },
+        });
       } catch (error) {
         setError(error.message);
         //console.log(error.response.data);
@@ -92,10 +105,10 @@ export default function Register() {
               </label>
               <input
                 type="text"
-                id="name"
+                id="fullName"
                 onChange={handleInputChange} // Use custom handleInputChange
                 onBlur={formik.handleBlur}
-                value={formik.values.name}
+                value={formik.values.fullName}
                 className="border border-gray-300 text-gray-900 text-sm rounded-lg placeholder-gray-300 focus:ring-yellow-1000 focus:border-yellow-1000 block w-full p-2.5"
                 placeholder="Enter Your First Name"
               />

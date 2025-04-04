@@ -2,24 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Beatrice Deck";
-  src: url("/src/assets/fonts/BeatriceDeckTrial-Regular.woff2") format("woff2"),
-    url("/src/assets/fonts/BeatriceDeckTrial-Regular.woff") format("woff"),
-    url("/src/assets/fonts/BeatriceDeckTrial-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Beatrice Deck";
-  src: url("/src/assets/fonts/BeatriceDeckTrial-Bold.woff2") format("woff2"),
-    url("/src/assets/fonts/BeatriceDeckTrial-Bold.woff") format("woff"),
-    url("/src/assets/fonts/BeatriceDeckTrial-Bold.ttf") format("truetype");
-  font-weight: bold;
-  font-style: normal;
-}
-
 :root {
   --font-beatrice-deck: "Beatrice Deck", sans-serif;
 }

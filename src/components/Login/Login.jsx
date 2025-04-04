@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import styles from "./Login.module.css";
 import { useFormik } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import AuthService from "../../Services/AuthService";
+import { useAuth } from "../../context/AuthContext";
 import * as Yup from "yup";
 
 export default function Login() {
   //let [token, setToken] = useContext(TokenContext);
+  const { login } = useAuth(); // Access the login function from context
+  const navigate = useNavigate(); // Hook to navigate programmatically
   const [error, setError] = useState(null); // State to handle login errors
   const [loading, setLoading] = useState(false); // State to handle loading
 
@@ -24,7 +29,16 @@ export default function Login() {
       setError(null);
       setLoading(true); // Set loading to true
       try {
-        console.log(values); // Log the form values
+        const response = await AuthService.login(values); // Call the login function
+        console.log("Login successful:", response);
+        if (
+          response.role === "Customer" ||
+          response.role === "customer" ||
+          response.role === "CUSTOMER"
+        ) {
+          login(response); // Update context with user and token
+          navigate("/");
+        }
       } catch (error) {
         setError(error.message); // Set error message
       } finally {

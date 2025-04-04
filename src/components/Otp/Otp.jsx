@@ -2,17 +2,20 @@ import React, { useState, useRef, useEffect } from "react";
 import styles from "./Otp.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
+import AuthService from "../../Services/AuthService";
+import { useAuth } from "../../Context/AuthContext";
 import * as Yup from "yup";
 
 export default function Otp() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { email, token } = location.state || { email: "", token: "" };
+  const { userData, email } = location.state || { userData: null, email: "" };
   const [loading, setLoading] = useState(false); // State to handle loading
   const [error, setError] = useState(false); // State to handle loading
   const [loadingOtp, setLoadingOtp] = useState(false); // State to handle loading
-  const [timer, setTimer] = useState(5); // Timer state
+  const [timer, setTimer] = useState(120); // Timer state
   const [isResendDisabled, setIsResendDisabled] = useState(true); // Resend button state
+  const { Register } = useAuth(); // Access the login function from context
 
   const inputRefs = useRef([]);
 
@@ -31,14 +34,20 @@ export default function Otp() {
       const userOtp = values.otp.join("");
       if (userOtp.length == 6) {
         try {
-          const response = await AuthService.ValidateOTP({
-            email: email,
-            otp: userOtp,
-          });
-          console.log("Otp successful:", response);
-          navigate("/updatePassword", {
-            state: { email: email, token: token },
-          }); // Redirect to login or another page
+          const otpValid = await AuthService.validateOtp(email, userOtp);
+          console.log("Otp successful:", otpValid);
+          if (!otpValid) {
+            setError("Invalid OTP code");
+            throw new Error("Invalid OTP code");
+          }
+          console.log(userData);
+
+          // If OTP is valid, proceed with registration
+          const registrationResponse = await AuthService.register(userData);
+          console.log("Registration successful:", registrationResponse);
+          Register(registrationResponse);
+          // Redirect to home after successful registration
+          navigate("/");
         } catch (error) {
           setError(error.message);
           //console.log("forget password failed:", error);
@@ -91,24 +100,11 @@ export default function Otp() {
     formik.setFieldValue("otp", newOtp);
   };
 
-  // Start the timer on component mount
-  useEffect(() => {
-    let interval;
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((prevTimer) => prevTimer - 1);
-      }, 1000);
-    } else {
-      setIsResendDisabled(false); // Enable resend button when timer reaches 0
-    }
-    return () => clearInterval(interval); // Cleanup interval on component unmount
-  }, [timer]);
-
   // Handle resend OTP
   const handleResendOtp = async () => {
     try {
       setLoadingOtp(true); // Set loading to true
-      const response = await AuthService.GenerateNewOTP({ email });
+      const response = await AuthService.generateOtp({ email });
       console.log("New OTP generated:", response);
 
       // Clear the OTP input boxes
@@ -127,6 +123,28 @@ export default function Otp() {
       setLoadingOtp(false);
     }
   };
+
+  // Format timer to mm:ss
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs
+      .toString()
+      .padStart(2, "0")}`;
+  };
+
+  // Start the timer on component mount
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+    } else {
+      setIsResendDisabled(false); // Enable resend button when timer reaches 0
+    }
+    return () => clearInterval(interval); // Cleanup interval on component unmount
+  }, [timer]);
 
   return (
     <>
@@ -175,7 +193,8 @@ export default function Otp() {
                     isResendDisabled ? "opacity-70 cursor-not-allowed" : ""
                   }`}
                 >
-                  Resend Code {isResendDisabled && `(${timer}s)`}{" "}
+                  Resend Code{" "}
+                  {isResendDisabled && !loadingOtp && `(${formatTime(timer)})`}
                   {loadingOtp ? (
                     <>
                       <svg
@@ -231,7 +250,7 @@ export default function Otp() {
                       fill="currentColor"
                     />
                   </svg>
-                  Loading...
+                  Verifying...
                 </>
               ) : (
                 "Continue"
