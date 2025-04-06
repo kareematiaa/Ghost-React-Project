@@ -77,8 +77,8 @@ export default function CheckOut() {
           governate: values.governate,
           customerAddress: {
             addressLine: values.addressLine,
+            landmark: values.landmark,
             city: values.city,
-            unitNumber: values.unitNumber,
             streetNumber: values.streetNumber,
           },
           items: orderItems,
@@ -99,6 +99,7 @@ export default function CheckOut() {
         }
       } catch (error) {
         toast.error(error.message);
+        console.log("Error placing order:", error);
       } finally {
         setLoading(false);
       }
@@ -206,15 +207,13 @@ export default function CheckOut() {
                 type="text"
                 name="email"
                 placeholder="Email"
-                className={`border ${
-                  formik.errors.email ? "border-red-500" : "border-gray-300"
-                } px-4 py-2 rounded-md w-full`}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.email && formik.errors.email && (
-                <div className="text-red-500 text-xs mt-1">
+                <div className="text-red-800 text-xs mt-1">
                   {formik.errors.email}
                 </div>
               )}
@@ -225,17 +224,13 @@ export default function CheckOut() {
                 type="text"
                 name="phoneNumber"
                 placeholder="Phone Number"
-                className={`border ${
-                  formik.errors.phoneNumber
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } px-4 py-2 rounded-md w-full`}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 value={formik.values.phoneNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                <div className="text-red-500 text-xs mt-1">
+                <div className="text-red-800 text-xs mt-1">
                   {formik.errors.phoneNumber}
                 </div>
               )}
@@ -293,7 +288,7 @@ export default function CheckOut() {
             </div>
           </div>
           {formik.touched.paymentType && formik.errors.paymentType && (
-            <div className="text-red-500 text-xs mt-1">
+            <div className="text-red-800 text-xs mt-1">
               {formik.errors.paymentType}
             </div>
           )}
@@ -310,9 +305,7 @@ export default function CheckOut() {
                 value={formik.values.governate}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className={`border ${
-                  formik.errors.governate ? "border-red-500" : "border-gray-300"
-                } px-4 py-2 rounded-md w-full bg-white`}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
               >
                 {shippingCosts.map((option) => (
                   <option key={option.governate} value={option.governate}>
@@ -321,7 +314,7 @@ export default function CheckOut() {
                 ))}
               </select>
               {formik.touched.governate && formik.errors.governate && (
-                <div className="text-red-500 text-xs mt-1">
+                <div className="text-red-800 text-xs mt-1">
                   {formik.errors.governate}
                 </div>
               )}
@@ -332,17 +325,13 @@ export default function CheckOut() {
                 type="text"
                 name="unitNumber"
                 placeholder="Unit Number"
-                className={`border ${
-                  formik.errors.unitNumber
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } px-4 py-2 rounded-md w-full`}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 value={formik.values.unitNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.unitNumber && formik.errors.unitNumber && (
-                <div className="text-red-500 text-xs mt-1">
+                <div className="text-red-800 text-xs mt-1">
                   {formik.errors.unitNumber}
                 </div>
               )}
@@ -354,15 +343,13 @@ export default function CheckOut() {
               type="text"
               name="addressLine"
               placeholder="Street Address"
-              className={`border ${
-                formik.errors.addressLine ? "border-red-500" : "border-gray-300"
-              } px-4 py-2 rounded-md w-full`}
+              className="border border-gray-300 px-4 py-2 rounded-md w-full"
               value={formik.values.addressLine}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
             />
             {formik.touched.addressLine && formik.errors.addressLine && (
-              <div className="text-red-500 text-xs mt-1">
+              <div className="text-red-800 text-xs mt-1">
                 {formik.errors.addressLine}
               </div>
             )}
@@ -373,16 +360,14 @@ export default function CheckOut() {
               <input
                 type="text"
                 name="city"
-                placeholder="City"
-                className={`border ${
-                  formik.errors.city ? "border-red-500" : "border-gray-300"
-                } px-4 py-2 rounded-md w-full`}
+                placeholder="city"
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 value={formik.values.city}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.city && formik.errors.city && (
-                <div className="text-red-500 text-xs mt-1">
+                <div className="text-red-800 text-xs mt-1">
                   {formik.errors.city}
                 </div>
               )}
@@ -393,17 +378,13 @@ export default function CheckOut() {
                 type="text"
                 name="streetNumber"
                 placeholder="Street Number"
-                className={`border ${
-                  formik.errors.streetNumber
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } px-4 py-2 rounded-md w-full`}
+                className="border border-gray-300 px-4 py-2 rounded-md w-full"
                 value={formik.values.streetNumber}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.streetNumber && formik.errors.streetNumber && (
-                <div className="text-red-500 text-xs mt-1">
+                <div className="text-red-800 text-xs mt-1">
                   {formik.errors.streetNumber}
                 </div>
               )}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styles from "./Cart.module.css";
 import { GoTrash } from "react-icons/go";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CartService from "../../Services/CartService";
 import { useAuth } from "../../context/AuthContext"; // Assuming you have a UserContext
 import { toast } from "react-hot-toast";
@@ -9,15 +9,17 @@ import { toast } from "react-hot-toast";
 export default function Cart() {
   const { userId } = useAuth(); // Get customer ID from context
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const productsRef = useRef(null);
+  const navigate = useNavigate();
 
   const fetchCartItems = async () => {
+    if (!userId) return;
+
     if (productsRef.current) {
       productsRef.current.scrollTop = window.scrollY; // Save scroll position
     }
-    if (!userId) return;
 
     try {
       setLoading(true);
@@ -137,12 +139,20 @@ export default function Cart() {
   if (loading)
     return <div className="p-6 max-w-6xl mx-auto">Loading cart...</div>;
   if (error) return <div className="p-6 max-w-6xl mx-auto">Error: {error}</div>;
-  if (!userId)
+
+  if (!userId) {
     return (
       <div className="p-6 max-w-6xl mx-auto">
-        Please login to view your cart
+        <p className="mb-5">Please login to view your cart</p>
+        <Link
+          to="/Login"
+          className="px-4 py-2 bg-gray-1000 text-white rounded-2xl text-sm "
+        >
+          Login
+        </Link>
       </div>
     );
+  }
 
   return (
     <div className="p-6 max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -151,7 +161,7 @@ export default function Cart() {
         <h2 className="text-lg font-semibold mb-4">SHOPPING BAG</h2>
         {cartItems.length === 0 ? (
           <div>
-            <p className="text-gray-500">Your cart is empty</p>
+            <p className="text-gray-500 ">Your cart is empty</p>
             <Link to="/products" className="text-dark-1000 underline mt-5">
               Browse Products
             </Link>

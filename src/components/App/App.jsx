@@ -15,6 +15,8 @@ import UpdatePassword from "../UpdatePassword/UpdatePassword";
 import ForgetPassword from "../ForgetPassword/ForgetPassword";
 import OrderSuccess from "../OrderSuccess/OrderSuccess";
 import OrderFailed from "../OrderFailed/OrderFailed";
+import AddProduct from "../Admin/AddProduct/AddProduct";
+import AddProductVariant from "../Admin/AddProductVariant/AddProductVariant";
 
 function App() {
   let routers = createBrowserRouter([
@@ -35,6 +37,8 @@ function App() {
         { path: "ForgetPassword", element: <ForgetPassword /> },
         { path: "OrderSuccess", element: <OrderSuccess /> },
         { path: "OrderFailed", element: <OrderFailed /> },
+        { path: "AddProduct", element: <AddProduct /> },
+        { path: "AddColor", element: <AddProductVariant /> },
       ],
     },
   ]);

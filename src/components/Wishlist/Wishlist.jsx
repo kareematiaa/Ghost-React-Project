@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { GoTrash } from "react-icons/go";
 import model1 from "../../assets/model1.png";
 import model2 from "../../assets/model2.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import WishlistService from "../../Services/WishlistService";
 import { useAuth } from "../../context/AuthContext"; // Assuming you have a UserContext
 import { toast } from "react-hot-toast";
@@ -12,6 +12,7 @@ export default function Wishlist() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { userId } = useAuth(); // Get customer ID from context
+  const navigate = useNavigate(); // Hook to navigate programmatically
 
   const fetchWishlistItems = async () => {
     if (!userId) return;
@@ -38,9 +39,21 @@ export default function Wishlist() {
     fetchWishlistItems();
   }, [userId]);
 
-  const handleRemove = async (productId) => {
-    if (!userId) return;
+  if (!userId) {
+    return (
+      <div className="p-6 max-w-6xl mx-auto">
+        <p className="mb-5">Please login to view your wishlist</p>
+        <Link
+          to="/Login"
+          className="px-4 py-2 bg-gray-1000 text-white rounded-2xl text-sm "
+        >
+          Login
+        </Link>
+      </div>
+    );
+  }
 
+  const handleRemove = async (productId) => {
     try {
       setLoading(true);
       const response = await WishlistService.DeleteItemFromWishlist(
@@ -57,6 +70,7 @@ export default function Wishlist() {
       setLoading(false);
     }
   };
+
   return (
     <>
       <div className="p-12 ">

@@ -18,7 +18,7 @@ export default function OrderSuccess() {
         </p>
 
         <button
-          className="w-full text-white py-2 sm:py-3 rounded-lg font-semibold transition-colors bg-yellow-1000 hover:bg-blue-1000 "
+          className="w-full text-white py-2 sm:py-3 rounded-lg font-semibold transition-colors bg-gray-1000  "
           onClick={() => (window.location.href = "/")} // Or your routing logic
         >
           Back To Home

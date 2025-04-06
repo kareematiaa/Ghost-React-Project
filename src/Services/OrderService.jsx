@@ -8,6 +8,8 @@ const OrderService = {
 
       return response.data;
     } catch (error) {
+      console.log(error);
+
       throw new Error(ApiErrorHandler.getErrorMessage(error));
     }
   },
@@ -15,6 +17,26 @@ const OrderService = {
   GetShippingCosts: async () => {
     try {
       const response = await apiClient.get("Shipping/GetShippingCosts");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(ApiErrorHandler.getErrorMessage(error));
+    }
+  },
+
+  GetAllOrders: async () => {
+    try {
+      const response = await apiClient.get("Order/GetAllOrders");
+
+      return response.data;
+    } catch (error) {
+      throw new Error(ApiErrorHandler.getErrorMessage(error));
+    }
+  },
+
+  GetAllCustomers: async () => {
+    try {
+      const response = await apiClient.get("User/GetAllCustomers");
 
       return response.data;
     } catch (error) {
