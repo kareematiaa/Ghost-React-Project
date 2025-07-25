@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const [userName, setUserName] = useState(null);
   const [userEmail, setUserEmail] = useState(null);
   const [userPhone, setUserPhone] = useState(null);
+  const [role, setRole] = useState(null); // Add role to state
   const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       setUserId(decoded.id);
       setUserName(decoded.fullName);
       setUserEmail(decoded.email);
+      setRole(decoded.role); // Set role from decoded token
       setUserPhone(decoded.phoneNumber);
       setIsAuthenticated(true);
     }
@@ -29,7 +31,7 @@ export const AuthProvider = ({ children }) => {
     const { token } = response;
     localStorage.setItem("token", token);
     const decoded = jwtDecode(token);
-
+    setRole(decoded.role); // Store role
     setToken(token);
     setUserId(decoded.id);
     setUserName(decoded.fullName);
@@ -45,6 +47,7 @@ export const AuthProvider = ({ children }) => {
 
     setToken(token);
     setUserId(decoded.id);
+    setRole(decoded.role); // Set role from decoded tok
     setUserName(decoded.fullName);
     setUserEmail(decoded.email);
     setUserPhone(decoded.phoneNumber);
@@ -54,6 +57,7 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setUserId(null);
+    setRole(null); // Clear role
     setUserName(null);
     setUserEmail(null);
     setUserPhone(null);
@@ -69,6 +73,7 @@ export const AuthProvider = ({ children }) => {
         userEmail,
         userPhone,
         token,
+        role, // Provide role in context
         isAuthenticated,
         login,
         Register,

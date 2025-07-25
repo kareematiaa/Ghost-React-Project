@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import OrderService from "../../../Services/OrderService";
 import { ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const statusColors = {
   New: "text-orange-500",
@@ -11,6 +12,7 @@ const statusColors = {
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,7 +58,10 @@ export default function AdminOrders() {
                   {order.totalPrice} <span className="text-xs">sr</span>
                 </td>
                 <td className="px-6 py-4 text-center">
-                  <button className="bg-orange-100 hover:bg-orange-200 text-orange-500 p-2 rounded-full transition">
+                  <button
+                    onClick={() => navigate(`/Admin/OrderDetails/${order.id}`)}
+                    className="bg-orange-100 hover:bg-orange-200 text-orange-500 p-2 rounded-full transition"
+                  >
                     {" "}
                     <ArrowRight size={16} />
                   </button>

@@ -57,6 +57,17 @@ const AuthService = {
     }
   },
 
+  GenerateResetToken: async (email) => {
+    try {
+      const response = await apiClient.post(
+        `Authentication/GenerateResetToken?email=${email}`
+      );
+      return response.data;
+    } catch (error) {
+      throw new Error(ApiErrorHandler.getErrorMessage(error));
+    }
+  },
+
   ResetPassword: async (credentials) => {
     try {
       const response = await apiClient.post(
@@ -65,19 +76,21 @@ const AuthService = {
       );
       return response.data;
     } catch (error) {
-      throw new Error(ApiErrorHandler.getErrorMessage(error));
+      console.log(error);
+
+      throw new Error(ApiErrorHandler.getErrorMessage(error)); // Use the error handler
     }
   },
 
-  ForgotPassword: async (credentials) => {
+  CheckExistence: async (email) => {
     try {
-      const response = await apiClient.post(
-        "Authentication/ForgotPassword",
-        credentials
+      const response = await apiClient.get(
+        `Authentication/CheckExistence?email=${email}`
       );
+
       return response.data;
     } catch (error) {
-      throw new Error(ApiErrorHandler.getErrorMessage(error)); // Use the error handler
+      throw new Error(ApiErrorHandler.getErrorMessage(error));
     }
   },
 };

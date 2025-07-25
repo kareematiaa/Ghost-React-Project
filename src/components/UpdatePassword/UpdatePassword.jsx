@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./UpdatePassword.module.css";
 import { useFormik } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
+import AuthService from "../../Services/AuthService";
 import * as Yup from "yup";
 
 export default function UpdatePassword() {
@@ -9,8 +10,7 @@ export default function UpdatePassword() {
   const [loading, setLoading] = useState(false); // State to handle loading
   const navigate = useNavigate(); // Hook to navigate programmatically
   const location = useLocation();
-  const { email, token } = location.state || { email: "", token: "" };
-
+  const { email, token } = location.state || {};
   let mySchema = Yup.object({
     password: Yup.string()
       .required("password is required")
@@ -23,6 +23,13 @@ export default function UpdatePassword() {
       .oneOf([Yup.ref("password")], "not match password"),
   });
 
+  useEffect(() => {
+    if (!email || !token) {
+      navigate("/ForgetPassword", { replace: true });
+      return;
+    }
+  }, [email, token, navigate]);
+
   const formik = useFormik({
     initialValues: {
       password: "",
@@ -32,18 +39,18 @@ export default function UpdatePassword() {
     onSubmit: async (values) => {
       setError(null);
       setLoading(true); // Set loading to true
-
+      console.log("Updating password for:", email, "with token:", token);
       try {
-        // const response = await AuthService.ForgotPassword({
-        //   token: token,
-        //   email: email,
-        //   newPassword: values.password,
-        // }); // Call the Register function
+        const response = await AuthService.ResetPassword({
+          email: email,
+          token: token,
+          newPassword: values.password,
+        });
 
-        console.log(values);
-        //navigate("/login");
+        console.log(response);
+        navigate("/login");
       } catch (error) {
-        //console.log(error.response.data);
+        console.log(error);
 
         setError(error.message);
       } finally {

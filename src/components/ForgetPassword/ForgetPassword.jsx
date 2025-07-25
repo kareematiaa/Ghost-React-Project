@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styles from "./ForgetPassword.module.css";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import AuthService from "../../Services/AuthService";
 import * as Yup from "yup";
 //import AuthService from "../../../Services/AuthService";
 
@@ -27,14 +28,15 @@ export default function ForgetPassword() {
       setError(null);
       setLoading(true); // Set loading to true
       try {
-        const response = await AuthService.ResetPassword(values); // Call the reset password function
+        const response = await AuthService.GenerateResetToken(values.email); // Call the reset password function
         console.log("reset password successful:", response);
+        const rsp = await AuthService.generateOtp(values.email, "confirmation");
+        console.log(rsp);
 
         navigate("/GeneralOtp", {
           state: {
             email: values.email,
-            otp: response.otp,
-            token: response.token,
+            token: response,
           },
         });
       } catch (error) {

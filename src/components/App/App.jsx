@@ -1,5 +1,9 @@
 import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import "./App.css";
 import Home from "../Home/Home";
 import Products from "../Products/Products";
@@ -17,6 +21,18 @@ import OrderSuccess from "../OrderSuccess/OrderSuccess";
 import OrderFailed from "../OrderFailed/OrderFailed";
 import AddProduct from "../Admin/AddProduct/AddProduct";
 import AddProductVariant from "../Admin/AddProductVariant/AddProductVariant";
+import AddProductImages from "../Admin/AddProduct/AddImage/AddImage";
+import AdminOrders from "../Admin/AdminOrders/AdminOrders";
+import AdminCustomers from "../Admin/AdminCustomers/AdminCustomers";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import AdminDashboard from "../Admin/AdminDashboard/AdminDashboard";
+import AdminProducts from "../Admin/AdminProducts/AdminProducts";
+import AdminProductDetails from "../Admin/AdminProductDetails/AdminProductDetails";
+import AdminLayout from "../Admin/AdminLayout/AdminLayout";
+import GeneralOtp from "../GeneralOtp/GeneralOtp";
+import OrderDetails from "../Admin/AdminOrders/OrderDetails/OrderDetails";
+import AddColor from "../Admin/AddColor/AddColor";
+import AddSize from "../Admin/AddSize/AddSixe";
 
 function App() {
   let routers = createBrowserRouter([
@@ -33,15 +49,37 @@ function App() {
         { path: "Login", element: <Login /> },
         { path: "Register", element: <Register /> },
         { path: "Otp", element: <Otp /> },
+        { path: "GeneralOtp", element: <GeneralOtp /> },
         { path: "UpdatePassword", element: <UpdatePassword /> },
         { path: "ForgetPassword", element: <ForgetPassword /> },
         { path: "OrderSuccess", element: <OrderSuccess /> },
         { path: "OrderFailed", element: <OrderFailed /> },
+      ],
+    },
+    {
+      path: "Admin",
+      element: (
+        <ProtectedRoute adminOnly>
+          <AdminLayout />
+        </ProtectedRoute>
+      ),
+      children: [
+        { index: true, element: <Navigate to="AdminDashboard" /> },
+        { path: "AdminDashboard", element: <AdminDashboard /> },
         { path: "AddProduct", element: <AddProduct /> },
-        { path: "AddColor", element: <AddProductVariant /> },
+        { path: "AddProductColor", element: <AddProductVariant /> },
+        { path: "AddProductImage", element: <AddProductImages /> },
+        { path: "Orders", element: <AdminOrders /> },
+        { path: "Customers", element: <AdminCustomers /> },
+        { path: "AdminProducts", element: <AdminProducts /> },
+        { path: "ProductDetails/:productId", element: <AdminProductDetails /> },
+        { path: "OrderDetails/:orderId", element: <OrderDetails /> },
+        { path: "AddColor", element: <AddColor /> },
+        { path: "AddSize", element: <AddSize /> },
       ],
     },
   ]);
+
   return (
     <>
       <RouterProvider router={routers}></RouterProvider>

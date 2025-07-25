@@ -171,7 +171,7 @@ export default function Cart() {
             {cartItems.map((item) => (
               <div
                 key={`${item.id}-${item.sizeId}`}
-                className="rounded-lg flex flex-col my-5 relative"
+                className="rounded-lg flex flex-col my-5 relative mx-3"
               >
                 {/* Remove Icon */}
                 <button

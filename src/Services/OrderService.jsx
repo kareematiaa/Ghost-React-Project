@@ -43,6 +43,15 @@ const OrderService = {
       throw new Error(ApiErrorHandler.getErrorMessage(error));
     }
   },
+
+  GetOrderDetails: async (orderId) => {
+    try {
+      const response = await apiClient.get(`Order/GetOrderDetails/${orderId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(ApiErrorHandler.getErrorMessage(error));
+    }
+  },
 };
 
 export default OrderService;

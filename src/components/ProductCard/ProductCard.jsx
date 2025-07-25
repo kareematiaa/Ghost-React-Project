@@ -10,7 +10,7 @@ export default function ProductCard({ product }) {
       <div>
         <div>
           <Link to={`/ProductDetails?id=${product.productId}`}>
-            <img src={model1} className="w-full h-80 object-cover" />
+            <img src={product.image} className="w-full h-80 object-cover" />
             <h3 className="text-lg font-semibold">{product.name}</h3>
             <p className="font-medium">
               {product.price} <span>sr</span>

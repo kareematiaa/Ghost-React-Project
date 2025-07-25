@@ -36,7 +36,7 @@ export default function CustomNavbar() {
           {/* Wishlist */}
           <Link
             to="/Wishlist"
-            className="p-2 rounded-full bg-gray-800 text-white"
+            className="p-2 rounded-full bg-gray-1000 text-white"
           >
             <FaRegHeart />
           </Link>
@@ -44,7 +44,7 @@ export default function CustomNavbar() {
           {/* Cart */}
           <Link
             to="/Cart"
-            className="px-4 py-1 bg-gray-800 text-white rounded-2xl text-sm"
+            className="px-4 py-1 bg-gray-1000 text-white rounded-2xl text-sm"
           >
             Cart
           </Link>

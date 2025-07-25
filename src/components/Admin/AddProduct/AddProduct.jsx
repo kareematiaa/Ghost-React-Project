@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ProductService from "../../../Services/ProductService";
+import { useNavigate } from "react-router-dom";
 
 // Validation Schema
 const productSchema = Yup.object().shape({
@@ -22,6 +23,7 @@ export default function AddProduct() {
   const [categories, setCategories] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -36,10 +38,12 @@ export default function AddProduct() {
       try {
         const resp = await ProductService.AddProduct(values);
         console.log("Product added successfully:", resp);
-
         setSubmitSuccess(true);
         resetForm();
         setTimeout(() => setSubmitSuccess(false), 3000);
+        navigate("/Admin/AddProductColor", {
+          state: { productId: resp.result.id },
+        });
       } catch (error) {
         console.error("Error submitting product:", error);
       } finally {

@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ProductService from "../../../../Services/ProductService";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const imageSchema = Yup.object().shape({
   images: Yup.array()
@@ -14,9 +16,12 @@ const imageSchema = Yup.object().shape({
     .min(1, "At least one image is required"),
 });
 
-export default function AddProductImages({ productVariantId }) {
+export default function AddProductImages() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const location = useLocation();
+  const { productVariantId } = location.state || {};
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {

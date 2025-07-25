@@ -4,8 +4,9 @@ import { useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 
 import AuthService from "../../Services/AuthService";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../Context/AuthContext";
 import * as Yup from "yup";
+import { jwtDecode } from "jwt-decode";
 
 export default function Login() {
   //let [token, setToken] = useContext(TokenContext);
@@ -27,20 +28,20 @@ export default function Login() {
     validationSchema: mySchema,
     onSubmit: async (values) => {
       setError(null);
-      setLoading(true); // Set loading to true
+      setLoading(true);
       try {
-        const response = await AuthService.login(values); // Call the login function
+        const response = await AuthService.login(values);
         console.log("Login successful:", response);
-        if (
-          response.role === "Customer" ||
-          response.role === "customer" ||
-          response.role === "CUSTOMER"
-        ) {
-          login(response); // Update context with user and token
-          navigate("/");
-        }
+
+        // Normalize role to lowercase for consistent comparison
+        login(response); // Update context with user and token
+        const decoded = jwtDecode(response.token);
+        const userRole = decoded.role;
+
+        // Redirect based on role
+        navigate(userRole == "Admin" ? "/Admin/AdminDashboard" : "/");
       } catch (error) {
-        setError(error.message); // Set error message
+        setError(error.message);
       } finally {
         setLoading(false);
       }

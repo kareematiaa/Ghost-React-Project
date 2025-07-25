@@ -46,6 +46,13 @@ export default function Register() {
       setLoading(true); // Set loading to true
 
       try {
+        // First check if user exists
+        // const userExists = await AuthService.CheckExistence(values.email);
+        // if (userExists.exists) {
+        //   setError("Email already registered. Please login instead.");
+        //   return;
+        // }
+
         // Only generate OTP, don't register yet
         const otpResponse = await AuthService.generateOtp(
           values.email,
@@ -62,7 +69,7 @@ export default function Register() {
         });
       } catch (error) {
         setError(error.message);
-        //console.log(error.response.data);
+        console.log(error.response.data);
         //setError(error.response.data || "Register failed. Please try again."); // the old set error message
       } finally {
         setLoading(false);

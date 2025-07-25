@@ -1,9 +1,40 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styles from "./Home.module.css";
 import model1 from "../../assets/model1.png";
 import model2 from "../../assets/model2.png";
+import { Link } from "react-router-dom";
+import ProductService from "../../Services/ProductService";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const productsRef = useRef(null);
+
+  const fetchProducts = async () => {
+    setLoading(true);
+    try {
+      if (productsRef.current) {
+        productsRef.current.scrollTop = window.scrollY; // Save scroll position
+      }
+      const data = await ProductService.GetAllProducts({
+        page: 1,
+        pageSize: 4,
+      });
+      setProducts(data.result);
+      // console.log("products", data.result.data);
+    } catch (err) {
+      setError(err.message);
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <div className="w-full text-black px-6 md:px-12">
@@ -17,10 +48,12 @@ export default function Home() {
               <p className="text-base lg:text-lg text-gray-500">Summer</p>
               <p className="text-gray-500 pb-8">2025</p>
               <div className=" flex items-end">
-                <button className="absolute lg:bottom-64 flex items-center w-28 h-7 lg:w-1/2 lg:h-10 text-xs lg:text-base font-semibold gap-2 bg-gray-20 text-gray-1000 py-1 px-2 lg:px-8">
-                  Go To Shop
-                  <span className="ml-2">→</span>
-                </button>
+                <Link to={"/Products"}>
+                  <button className="absolute lg:bottom-64 flex items-center w-28 h-7 lg:w-1/2 lg:h-10 text-xs lg:text-base font-semibold gap-2 bg-gray-20 text-gray-1000 py-1 px-2 lg:px-8">
+                    Go To Shop
+                    <span className="ml-2">→</span>
+                  </button>
+                </Link>
               </div>
             </div>
 
@@ -48,37 +81,19 @@ export default function Home() {
             <h2 className="text-lg lg:text-4xl md:text-3xl  font-bold uppercase">
               New This Week
             </h2>
-            <a href="#" className="text-gray-500 text-base lg:text-lg">
+            <Link
+              to={"/Products"}
+              className="text-gray-500 text-base lg:text-lg"
+            >
               See All
-            </a>
+            </Link>
           </div>
           <p className="text-lg text-gray-500">(50)</p>
 
           {/* Products Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 mt-6 gap-6">
             {/* Product Card */}
-            {[
-              {
-                name: "Embroidered Seersucker Shirt",
-                price: "$99",
-                image: model2,
-              },
-              {
-                name: "Basic Gym Fit T-Shirt",
-                price: "$99",
-                image: model1,
-              },
-              {
-                name: "Blurred Print T-Shirt",
-                price: "$99",
-                image: model2,
-              },
-              {
-                name: "Full Sleeve Zipper",
-                price: "$99",
-                image: model1,
-              },
-            ].map((product, index) => (
+            {products.slice(0, 4).map((product, index) => (
               <div key={index} className="">
                 <div>
                   <img
@@ -99,10 +114,14 @@ export default function Home() {
             Our Approach to fashion design
           </h2>
           <p className="text-lg text-gray-800 text-center mt-4 px-10 md:px-32 lg:px-64">
-            at elegant vogue , we blend creativity with craftsmanship to create
-            fashion that transcends trends and stands the test of time each
-            design is meticulously crafted, ensuring the highest quelity
-            exqulsite finish
+            Ghost? It is a commercial brand specialized in providing
+            high-quality T-shirts with designs that combine simplicity, elegance
+            and distinction. We draw our philosophy from the idea of ​​​​"quiet
+            presence", pieces that do not need exaggeration to attract
+            attention. We rely on carefully selected materials and studied
+            designs to reflect the personality of the wearer with calm and
+            confidence. At Ghost, we believe that true elegance lies in the
+            details and that self-expression does not need noise.
           </p>
         </section>
 
@@ -120,7 +139,7 @@ export default function Home() {
           </div>
         </section>
       </div>
-      <footer className="h-20 bg-gray-1000 text-white "></footer>
+      <footer className="h-10 bg-gray-1000 text-white "></footer>
     </>
   );
 }
